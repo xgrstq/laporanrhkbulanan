@@ -28,7 +28,10 @@ export default function IsiData({ form, setForm }) {
   const [openKegiatan, setOpenKegiatan] = useState(false)
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value
+    })
   }
 
   const resetForm = () => {
@@ -40,34 +43,25 @@ export default function IsiData({ form, setForm }) {
       kegiatan: "",
       kelompok: "",
       desa: "",
-      lokasi: "",
+      tempat: "",
       wilayah: "",
       tanggal: "",
       umum: "",
       tujuan: "",
       narasi: "",
-      hasil: ""
+      hasil: "",
+      simpulan: "",
+      foto: null
     })
   }
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-10 space-y-8">
 
-      {/* PROFIL */}
-      <Card
-        title="Profil & NIP"
-        right={
-          <button
-            onClick={resetForm}
-            className="text-sm text-gray-500 hover:text-black"
-          >
-            Reset
-          </button>
-        }
-      >
+      <Card title="Profil">
         <div className="space-y-4">
           <input name="nama" value={form.nama} onChange={handleChange}
-            placeholder="Nama Pendamping"
+            placeholder="Nama Lengkap"
             className="w-full border rounded-xl p-3" />
 
           <input name="nip" value={form.nip} onChange={handleChange}
@@ -80,10 +74,8 @@ export default function IsiData({ form, setForm }) {
         </div>
       </Card>
 
-      {/* RENCANA KERJA */}
       <Card title="Rencana Kerja">
         <div className="space-y-4">
-
           <div onClick={() => setOpenRhk(true)}
             className="border rounded-xl p-4 cursor-pointer">
             {form.rhk || "Pilih RHK"}
@@ -91,86 +83,96 @@ export default function IsiData({ form, setForm }) {
 
           <div onClick={() => setOpenKegiatan(true)}
             className="border rounded-xl p-4 cursor-pointer">
-            {form.kegiatan || "Pilih Kegiatan Pelaksanaan"}
+            {form.kegiatan || "Pilih Kegiatan"}
           </div>
-
         </div>
       </Card>
 
-      {/* LOKASI */}
       <Card title="Lokasi & Waktu">
-        <div className="grid md:grid-cols-2 gap-4">
-          <input name="kelompok" value={form.kelompok}
-            onChange={handleChange}
-            placeholder="Kelompok"
-            className="border rounded-xl p-3" />
+        <div className="space-y-4">
 
-          <input name="desa" value={form.desa}
+          <input
+            name="kelompok"
+            value={form.kelompok}
             onChange={handleChange}
-            placeholder="Desa"
-            className="border rounded-xl p-3" />
-        </div>
+            placeholder="Kelompok (contoh: Gempolan 2)"
+            className="w-full border rounded-xl p-3"
+          />
 
-        <div className="mt-4 space-y-4">
-          <input name="lokasi" value={form.lokasi}
+          <input
+            name="desa"
+            value={form.desa}
+            onChange={handleChange}
+            placeholder="Desa (contoh: Gempolan)"
+            className="w-full border rounded-xl p-3"
+          />
+
+          <input
+            name="tempat"
+            value={form.tempat}
             onChange={handleChange}
             placeholder="Tempat / Titik Lokasi"
-            className="border rounded-xl p-3 w-full" />
+            className="w-full border rounded-xl p-3"
+          />
 
-          <input name="wilayah" value={form.wilayah}
+          <input
+            name="wilayah"
+            value={form.wilayah}
             onChange={handleChange}
-            placeholder="Wilayah Dampingan"
-            className="border rounded-xl p-3 w-full" />
+            placeholder="Wilayah Dampingan (Kec/Kab)"
+            className="w-full border rounded-xl p-3"
+          />
 
-          <input type="date" name="tanggal"
+          <input
+            type="date"
+            name="tanggal"
             value={form.tanggal}
             onChange={handleChange}
-            className="border rounded-xl p-3 w-full" />
+            className="w-full border rounded-xl p-3"
+          />
+
         </div>
       </Card>
 
-      {/* MEDIA */}
-      <Card title="Media & Berkas">
-        <FileUpload />
+      <Card title="Pendahuluan">
+        <textarea name="umum" value={form.umum}
+          onChange={handleChange}
+          rows="4"
+          className="w-full border rounded-xl p-4" />
+
+        <textarea name="tujuan" value={form.tujuan}
+          onChange={handleChange}
+          rows="4"
+          className="w-full border rounded-xl p-4 mt-4" />
+
+        <textarea name="narasi" value={form.narasi}
+          onChange={handleChange}
+          rows="4"
+          className="w-full border rounded-xl p-4 mt-4" />
       </Card>
 
-      {/* UMUM */}
-      <Card title="UMUM">
-        <textarea name="umum"
-          value={form.umum}
+      <Card title="Hasil Yang Dicapai">
+        <textarea name="hasil" value={form.hasil}
           onChange={handleChange}
-          rows="6"
+          rows="4"
           className="w-full border rounded-xl p-4" />
       </Card>
 
-      {/* TUJUAN */}
-      <Card title="TUJUAN">
-        <textarea name="tujuan"
-          value={form.tujuan}
+      <Card title="Simpulan dan Saran">
+        <textarea name="simpulan" value={form.simpulan}
           onChange={handleChange}
-          rows="6"
+          rows="4"
           className="w-full border rounded-xl p-4" />
       </Card>
 
-      {/* NARASI */}
-      <Card title="NARASI">
-        <textarea name="narasi"
-          value={form.narasi}
-          onChange={handleChange}
-          rows="6"
-          className="w-full border rounded-xl p-4" />
+      <Card title="Lampiran Dokumentasi">
+        <FileUpload
+          onChange={(file) => {
+            setForm({ ...form, foto: file })
+          }}
+        />
       </Card>
 
-      {/* HASIL */}
-      <Card title="HASIL">
-        <textarea name="hasil"
-          value={form.hasil}
-          onChange={handleChange}
-          rows="6"
-          className="w-full border rounded-xl p-4" />
-      </Card>
-
-      {/* MODALS */}
       <ModalKegiatan
         open={openRhk}
         onClose={() => setOpenRhk(false)}
@@ -192,6 +194,13 @@ export default function IsiData({ form, setForm }) {
           setOpenKegiatan(false)
         }}
       />
+
+      <div className="text-right">
+        <button onClick={resetForm}
+          className="text-sm text-gray-500 hover:text-black">
+          Reset Form
+        </button>
+      </div>
 
     </div>
   )

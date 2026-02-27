@@ -1,103 +1,148 @@
+import { generatePDF } from "../utils/generatePDF"
+import { generateWord } from "../utils/generateWord"
+
 export default function Lihat({ form }) {
+
+  const formattedDate = form?.tanggal
+    ? new Date(form.tanggal).toLocaleDateString("id-ID", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      })
+    : ""
+
   return (
     <div className="bg-gray-200 py-10 px-4">
 
+      <div className="max-w-4xl mx-auto mb-6 flex gap-4">
+        <button
+          onClick={generatePDF}
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+        >
+          Export PDF
+        </button>
+
+        <button
+          onClick={() => generateWord(form)}
+          className="bg-green-600 text-white px-4 py-2 rounded-lg"
+        >
+          Export Word
+        </button>
+      </div>
+
       <div
         id="print-lihat"
-        className="max-w-4xl mx-auto bg-white shadow-lg p-10"
+        className="max-w-4xl mx-auto bg-white shadow-lg p-14"
+        style={{ fontFamily: "Times New Roman", fontSize: "11pt" }}
       >
 
-        {/* HEADER */}
-        <div className="text-center space-y-2">
-          <h1 className="font-bold text-lg">
-            KEMENTERIAN SOSIAL REPUBLIK INDONESIA
-          </h1>
-          <h2 className="font-semibold text-sm">
-            DIREKTORAT JENDERAL PERLINDUNGAN DAN JAMINAN SOSIAL
-          </h2>
-          <h2 className="font-semibold text-sm">
-            DIREKTORAT PERLINDUNGAN SOSIAL NON KEBENCANAAN
-          </h2>
-
-          <div className="border-b-2 border-black my-4" />
-
-          <h2 className="font-bold underline text-base">
-            LAPORAN HARIAN
-          </h2>
-
-          <p className="font-semibold mt-2">
-            {form?.rhk || "-"}
+        <div className="text-center border-b-2 border-black pb-3">
+          <p className="font-bold uppercase text-[14pt]">
+            Kementerian Sosial Republik Indonesia
           </p>
-
-          <p className="italic text-sm">
-            ({form?.kegiatan || "-"})
+          <p className="font-bold uppercase text-[11pt]">
+            Direktorat Jenderal Perlindungan dan Jaminan Sosial
+          </p>
+          <p className="font-bold uppercase text-[10pt]">
+            Direktorat Perlindungan Sosial Non Kebencanaan
           </p>
         </div>
 
-        {/* CONTENT */}
-        <div className="mt-10 space-y-6 text-sm leading-relaxed text-justify">
+        <div className="text-center mt-6">
+          <p className="font-bold underline uppercase text-[13pt]">
+            Laporan Harian
+          </p>
+
+          <p className="font-bold mt-3">{form?.rhk}</p>
+          <p className="italic">({form?.kegiatan})</p>
+        </div>
+
+        <div className="mt-10 space-y-6 leading-relaxed text-justify">
 
           <div>
-            <h3 className="font-bold mb-2">
-              A. Pendahuluan
-            </h3>
-            <p>
-              <strong>Umum:</strong> {form?.umum || "-"}
+            <p className="font-bold">A. Pendahuluan</p>
+            <div className="ml-6 mt-2 space-y-3">
+              <p><b><i>Umum:</i></b> {form?.umum}</p>
+              <p><b><i>Maksud dan Tujuan:</i></b> {form?.tujuan}</p>
+              <p><b><i>Ruang Lingkup:</i></b> {form?.narasi}</p>
+            </div>
+          </div>
+
+          <div>
+            <p className="font-bold">B. Kegiatan yang Dilaksanakan</p>
+
+            <div className="ml-6 mt-2">
+
+              <p className="italic font-bold mb-2">
+                {form?.kegiatan}
+              </p>
+
+              <p className="mb-4">
+                {form?.narasi}
+              </p>
+
+              <table className="w-full text-sm">
+                <tbody>
+                  <tr>
+                    <td className="w-28 font-bold">Tempat</td>
+                    <td>
+                      : {form?.tempat}
+                      {form?.desa ? ` Desa ${form.desa}` : ""}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="font-bold">Wilayah</td>
+                    <td>
+                      : {form?.wilayah}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="font-bold">Waktu</td>
+                    <td>
+                      : {formattedDate}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+
+          <div>
+            <p className="font-bold">C. Hasil Yang Dicapai</p>
+            <div className="ml-6 mt-2">
+              {form?.hasil}
+            </div>
+          </div>
+
+          <div>
+            <p className="font-bold">D. Simpulan dan Saran</p>
+            <div className="ml-6 mt-2">
+              {form?.simpulan}
+            </div>
+          </div>
+
+        </div>
+
+        <div className="flex justify-end mt-20">
+          <div className="text-center w-64">
+            <p>Dibuat di : {form?.wilayah}</p>
+            <p>Pada Tanggal : {formattedDate}</p>
+
+            <p className="font-bold mt-4">{form?.jabatan}</p>
+
+            <div className="h-20"></div>
+
+            <p className="font-bold underline uppercase">
+              {form?.nama}
             </p>
+
+            <p>NIP. {form?.nip}</p>
           </div>
-
-          <div>
-            <h3 className="font-bold mb-2">
-              B. Tujuan
-            </h3>
-            <p>{form?.tujuan || "-"}</p>
-          </div>
-
-          <div>
-            <h3 className="font-bold mb-2">
-              C. Narasi Pelaksanaan
-            </h3>
-            <p>{form?.narasi || "-"}</p>
-          </div>
-
-          <div>
-            <h3 className="font-bold mb-2">
-              D. Hasil
-            </h3>
-            <p>{form?.hasil || "-"}</p>
-          </div>
-
-        </div>
-
-        {/* FOOTER */}
-        <div className="mt-16 text-sm">
-
-          <div className="flex justify-between">
-
-            <div>
-              <p>Mengetahui,</p>
-              <p>Koordinator Kabupaten/Kota</p>
-
-              <div className="h-20" />
-
-              <p>(_____________________)</p>
-            </div>
-
-            <div className="text-right">
-              <p>{form?.tanggal || "-"}</p>
-              <p>Pendamping Sosial</p>
-
-              <div className="h-20" />
-
-              <p>({form?.nama || "_____________________"})</p>
-            </div>
-
-          </div>
-
         </div>
 
       </div>
-
     </div>
   )
 }

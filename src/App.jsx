@@ -16,18 +16,19 @@ export default function App() {
     kegiatan: "",
     kelompok: "",
     desa: "",
-    lokasi: "",
+    tempat: "",
     wilayah: "",
     tanggal: "",
     umum: "",
     tujuan: "",
     narasi: "",
-    hasil: ""
+    hasil: "",
+    simpulan: "",
+    foto: null
   })
 
   return (
     <div className="min-h-screen bg-gray-100">
-
       <Navbar page={page} setPage={setPage} />
 
       <div className="pt-28 pb-28">
@@ -35,7 +36,6 @@ export default function App() {
         {page === "lihat" && <Lihat form={form} />}
         {page === "rhk" && <RHK />}
       </div>
-
     </div>
   )
 }
