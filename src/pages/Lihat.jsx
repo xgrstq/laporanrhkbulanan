@@ -1,5 +1,5 @@
-import { generatePDF } from "../utils/GeneratePDF"
-import { generateWord } from "../utils/Generateword"
+import { generatePDF } from "../utils/generatePDF"
+import { generateWord } from "../utils/generateWord"
 
 export default function Lihat({ form }) {
 
